@@ -1,0 +1,29 @@
+{
+    "name": "nette-latte-snippets",
+    "displayName": "Nette + Latte snippets",
+    "description": "Snippets for nette 3 framework",
+    "author":"Lukáš Kovář",
+    "publisher":"sirluky",
+    "version": "0.0.0",
+    "engines": {
+        "vscode": "^1.36.0"
+    },
+    "repository": {
+        "url": ""
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "php",
+                "path": "./snippets/nette.json"
+            },
+            {
+                "language": "latte",
+                "path": "./snippets/latte.json"
+            }
+        ]
+    }
+}

@@ -1,0 +1,92 @@
+{
+
+	"Render Method":{
+		"prefix": "ren",
+		"body": [
+			"public function renderDefault(): void {",
+				"$this->template->$1 = $this->database->table('$2')",
+			"}"
+		]
+	},
+	"Presenter":{
+		"prefix":"presenter",
+		"body":[
+			"<?php",
+			"namespace App\\Presenters;",
+			"",
+			"use Nette;",
+			"use Nette\\Application\\UI\\Form;",
+			"",
+			"",
+			"class PostPresenter extends Nette\\Application\\UI\\Presenter",
+			"{",
+				"\t/** @var Nette\\Database\\Context */",
+				"\tprivate $database;",
+			"",
+				"\tpublic function __construct(Nette\\Database\\Context $database)",
+				"\t{",
+					"\t\t$this->database = $database;",
+				"\t}",
+			"",
+				"\tpublic function renderShow(int $postId): void",
+				"\t{",
+					"\t\t$this->template->post = $this->database->table('posts')->get($postId);",
+				"\t}",
+			"}",
+			""
+		]
+	},
+	"Create component Form":{
+		"prefix":"form",
+		"body": [
+			"protected function createComponent$1Form(): Form",
+"{",
+    "\t$form = new Form; // means Nette\\Application\\UI\\Form",
+"",
+    "\t$form->addText('name', 'Jméno:')",
+        "\t\t->setRequired();",
+"",
+    "\t$form->addEmail('email', 'Email:');",
+"",
+    "\t$form->addTextArea('content', 'Komentář:')",
+        "\t\t->setRequired();",
+"",
+    "\t$form->addSubmit('send', 'Publikovat komentář');",
+"\t$form->onSuccess[] = [\t$this, 'commentFormSucceeded'];",
+    "\treturn $form;",
+"}"
+		]
+	},
+	"Form success":{
+		"prefix": "formsucc",
+		"body": [
+			"public function commentFormSucceeded(Form \t$form, \\stdClass $values): void",
+"{",
+    "\t$postId = $this->getParameter('postId');",
+"",
+    "\t$this->database->table('comments')->insert([",
+        "\t\t'post_id' => $postId,",
+        "\t\t'name' => $values->name,",
+        "\t\t'email' => $values->email,",
+        "\t\t'content' => $values->content,",
+    "\t]);",
+"",
+    "\t$this->flashMessage('Děkuji za $1', 'success');",
+    "\t$this->redirect('this');",
+"}"
+		]
+	},
+	"Action":{
+		"prefix": "act",
+		"body": [
+			"public function action$1(int $id): void",
+"{",
+    "\t$post = $this->database->table('posts')->get($postId);",
+    "\tif (!$post) {",
+        "\t\t$this->error('Not found');",
+    "\t}",
+    "\t$this['postForm']->setDefaults($post->toArray());",
+"}"
+		]
+	}
+}
